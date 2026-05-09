@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Luz Eterna ✝️</title>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="theme-color" content="#e8728a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Luz Eterna">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -454,6 +459,116 @@ textarea.inp { resize: none; min-height: 100px; }
   color: var(--texto);
 }
 
+/* BOTÓN VOLVER */
+.btn-back {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  position: absolute;
+  left: 16px;
+  top: 50px;
+  padding: 4px 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* COLOREAR */
+.color-palette {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin: 12px 0;
+}
+
+.color-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  font-size: 11px;
+  font-weight: 800;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+}
+
+.color-btn.active { border-color: #333; transform: scale(1.2); }
+
+.dibujo-svg { width: 100%; max-width: 340px; display: block; margin: 0 auto; }
+.dibujo-svg path, .dibujo-svg polygon, .dibujo-svg circle, .dibujo-svg rect, .dibujo-svg ellipse {
+  cursor: pointer;
+  transition: fill 0.2s;
+  stroke: #999;
+  stroke-width: 1;
+}
+
+.dibujo-selector {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px 0;
+  margin-bottom: 12px;
+}
+
+.dibujo-opt {
+  flex-shrink: 0;
+  background: white;
+  border: 2px solid rgba(232,114,138,0.3);
+  border-radius: 12px;
+  padding: 8px 14px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--texto);
+  white-space: nowrap;
+}
+
+.dibujo-opt.active { background: var(--rosa); color: white; border-color: var(--rosa); }
+
+/* ROMPECABEZAS */
+.puzzle-container {
+  display: grid;
+  gap: 3px;
+  margin: 12px auto;
+  width: fit-content;
+  background: var(--rosa-suave);
+  padding: 4px;
+  border-radius: 12px;
+}
+
+.puzzle-piece {
+  width: 80px;
+  height: 80px;
+  cursor: pointer;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  background: white;
+  border: 2px solid rgba(232,114,138,0.2);
+  transition: all 0.15s;
+  user-select: none;
+}
+
+.puzzle-piece:active { transform: scale(0.95); }
+.puzzle-piece.selected { border-color: var(--rosa); box-shadow: 0 0 0 3px rgba(232,114,138,0.3); }
+.puzzle-piece.correct { border-color: var(--dorado); background: #fffdf0; }
+
+/* ANIMACIONES */
 /* ANIMACIONES */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(15px); }
@@ -677,7 +792,8 @@ textarea.inp { resize: none; min-height: 100px; }
 
 <!-- PÁGINA HIMNOS -->
 <div class="page" id="pg-himnos">
-  <div class="hdr">
+  <div class="hdr" style="position:relative">
+    <button class="btn-back" onclick="go('inicio')">←</button>
     <div class="hdr-title">🎵 Himnos de Fe</div>
     <div class="hdr-sub">Alaba al Señor con tu corazón</div>
   </div>
@@ -707,12 +823,23 @@ textarea.inp { resize: none; min-height: 100px; }
       <div class="mi-title">Memorizar</div>
       <div class="mi-sub">Aprende versículos</div>
     </div>
+    <div class="menu-item" onclick="go('colorear')">
+      <div class="mi-icon">🎨</div>
+      <div class="mi-title">Colorear</div>
+      <div class="mi-sub">Dibujos por números</div>
+    </div>
+    <div class="menu-item" onclick="go('rompecabezas')">
+      <div class="mi-icon">🧩</div>
+      <div class="mi-title">Rompecabezas</div>
+      <div class="mi-sub">9, 16 o 25 piezas</div>
+    </div>
   </div>
 </div>
 
 <!-- PÁGINA SOPA DE LETRAS -->
 <div class="page" id="pg-sopa">
-  <div class="hdr">
+  <div class="hdr" style="position:relative">
+    <button class="btn-back" onclick="go('juegos')">←</button>
     <div class="hdr-title">🔍 Sopa de Letras</div>
     <div class="hdr-sub" id="sopa-nivel-txt">Nivel 1 — Fácil</div>
   </div>
@@ -732,7 +859,8 @@ textarea.inp { resize: none; min-height: 100px; }
 
 <!-- PÁGINA QUIZ -->
 <div class="page" id="pg-quiz">
-  <div class="hdr">
+  <div class="hdr" style="position:relative">
+    <button class="btn-back" onclick="go('juegos')">←</button>
     <div class="hdr-title">📝 Completa el Versículo</div>
     <div class="hdr-sub">Elige la palabra correcta</div>
   </div>
@@ -756,7 +884,8 @@ textarea.inp { resize: none; min-height: 100px; }
 
 <!-- PÁGINA MEMORIZAR -->
 <div class="page" id="pg-memorizar">
-  <div class="hdr">
+  <div class="hdr" style="position:relative">
+    <button class="btn-back" onclick="go('juegos')">←</button>
     <div class="hdr-title">⭐ Memorizar Versículos</div>
     <div class="hdr-sub">Guarda la Palabra en tu corazón</div>
   </div>
@@ -819,6 +948,67 @@ textarea.inp { resize: none; min-height: 100px; }
 
 <div class="modal-overlay" id="modal-himno">
   <div class="modal" id="modal-himno-content">
+  </div>
+</div>
+
+
+<!-- PÁGINA COLOREAR -->
+<div class="page" id="pg-colorear">
+  <div class="hdr" style="position:relative">
+    <button class="btn-back" onclick="go('juegos')">←</button>
+    <div class="hdr-title">🎨 Colorear Bíblico</div>
+    <div class="hdr-sub">Colorea por números</div>
+  </div>
+
+  <div style="padding:16px">
+    <!-- Selector de dibujo -->
+    <div class="dibujo-selector" id="dibujo-selector"></div>
+
+    <!-- Paleta de colores -->
+    <div class="color-palette" id="paleta-colores"></div>
+
+    <!-- Leyenda de números -->
+    <div id="leyenda-colores" style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:12px"></div>
+
+    <!-- SVG del dibujo -->
+    <div id="dibujo-container" style="text-align:center;background:white;border-radius:16px;padding:16px;box-shadow:0 4px 15px rgba(232,114,138,0.1)"></div>
+
+    <button class="btn btn-outline" style="margin-top:12px" onclick="reiniciarColorear()">🔄 Reiniciar colores</button>
+  </div>
+</div>
+
+<!-- PÁGINA ROMPECABEZAS -->
+<div class="page" id="pg-rompecabezas">
+  <div class="hdr" style="position:relative">
+    <button class="btn-back" onclick="go('juegos')">←</button>
+    <div class="hdr-title">🧩 Rompecabezas</div>
+    <div class="hdr-sub">Arma la imagen bíblica</div>
+  </div>
+
+  <div style="padding:16px">
+    <!-- Selector de piezas -->
+    <div style="display:flex;gap:8px;justify-content:center;margin-bottom:16px">
+      <button class="btn btn-outline" style="flex:1;padding:10px" onclick="iniciarRompecabezas(9)">3×3<br><span style="font-size:11px">9 piezas</span></button>
+      <button class="btn btn-outline" style="flex:1;padding:10px" onclick="iniciarRompecabezas(16)">4×4<br><span style="font-size:11px">16 piezas</span></button>
+      <button class="btn btn-outline" style="flex:1;padding:10px" onclick="iniciarRompecabezas(25)">5×5<br><span style="font-size:11px">25 piezas</span></button>
+    </div>
+
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+      <div style="font-size:13px;color:var(--texto-suave)" id="puzzle-info">Elige cuántas piezas</div>
+      <div style="font-size:13px;font-weight:700;color:var(--dorado)" id="puzzle-movs">Movimientos: 0</div>
+    </div>
+
+    <!-- Imagen referencia pequeña -->
+    <div id="puzzle-referencia" style="text-align:center;margin-bottom:12px;display:none">
+      <div style="font-size:11px;color:var(--texto-suave);margin-bottom:4px">Imagen objetivo:</div>
+      <div id="puzzle-ref-img" style="font-size:40px;background:var(--rosa-claro);border-radius:10px;padding:10px;display:inline-block"></div>
+    </div>
+
+    <!-- Tablero -->
+    <div id="puzzle-board" class="puzzle-container" style="display:none"></div>
+
+    <div class="resultado-msg" id="puzzle-resultado"></div>
+    <button class="btn" id="puzzle-reiniciar" style="margin-top:12px;display:none" onclick="barajarPuzzle()">🔀 Barajar</button>
   </div>
 </div>
 
@@ -918,6 +1108,7 @@ function go(pag) {
   if (pag === 'sopa') iniciarSopa();
   if (pag === 'quiz') iniciarQuiz();
   if (pag === 'memorizar') nuevoMemorizar();
+  if (pag === 'colorear') iniciarColorear();
   if (pag === 'oraciones') renderOraciones();
   if (pag === 'diario') renderDiario();
   if (pag === 'himnos') renderHimnos();
@@ -1374,6 +1565,442 @@ function buscarVersiculo() {
   }).join('');
 }
 
+
+// ===== COLOREAR POR NÚMEROS =====
+var coloresDisponibles = [
+  { num: 1, color: '#e8728a', nombre: 'Rosa' },
+  { num: 2, color: '#d4af37', nombre: 'Dorado' },
+  { num: 3, color: '#4a90d9', nombre: 'Azul' },
+  { num: 4, color: '#5cb85c', nombre: 'Verde' },
+  { num: 5, color: '#9b59b6', nombre: 'Morado' },
+  { num: 6, color: '#f0d98a', nombre: 'Amarillo' },
+  { num: 7, color: '#ffffff', nombre: 'Blanco' },
+  { num: 8, color: '#a0522d', nombre: 'Café' }
+];
+
+var colorSeleccionado = coloresDisponibles[0].color;
+var dibujoActual = 0;
+
+var dibujos = [
+  {
+    nombre: '🕊️ Paloma',
+    svg: `<svg viewBox="0 0 300 250" class="dibujo-svg" id="svg-colorear">
+      <!-- Cuerpo -->
+      <ellipse cx="150" cy="130" rx="70" ry="45" fill="#f0f0f0" data-num="7" data-area="cuerpo"/>
+      <!-- Ala izquierda -->
+      <ellipse cx="100" cy="110" rx="50" ry="25" fill="#f0f0f0" data-num="7" data-area="ala-izq" transform="rotate(-20,100,110)"/>
+      <!-- Ala derecha -->
+      <ellipse cx="200" cy="110" rx="50" ry="25" fill="#f0f0f0" data-num="7" data-area="ala-der" transform="rotate(20,200,110)"/>
+      <!-- Cabeza -->
+      <circle cx="195" cy="100" r="28" fill="#f0f0f0" data-num="7" data-area="cabeza"/>
+      <!-- Pico -->
+      <polygon points="223,98 240,105 223,112" fill="#d4af37" data-num="2" data-area="pico"/>
+      <!-- Ojo -->
+      <circle cx="205" cy="97" r="6" fill="#4a90d9" data-num="3" data-area="ojo"/>
+      <circle cx="205" cy="97" r="2" fill="#333"/>
+      <!-- Cola -->
+      <polygon points="80,140 60,160 90,155 70,175 100,165" fill="#f0f0f0" data-num="7" data-area="cola"/>
+      <!-- Patas -->
+      <line x1="150" y1="175" x2="140" y2="195" stroke="#d4af37" stroke-width="3"/>
+      <line x1="160" y1="175" x2="170" y2="195" stroke="#d4af37" stroke-width="3"/>
+      <!-- Rama -->
+      <path d="M120,200 Q160,190 200,200" stroke="#a0522d" stroke-width="4" fill="none" data-num="8" data-area="rama"/>
+      <!-- Olivo hojas -->
+      <ellipse cx="130" cy="195" rx="12" ry="6" fill="#5cb85c" data-num="4" data-area="hoja1" transform="rotate(-30,130,195)"/>
+      <ellipse cx="155" cy="188" rx="12" ry="6" fill="#5cb85c" data-num="4" data-area="hoja2" transform="rotate(10,155,188)"/>
+      <ellipse cx="180" cy="193" rx="12" ry="6" fill="#5cb85c" data-num="4" data-area="hoja3" transform="rotate(25,180,193)"/>
+      <!-- Rayos de luz -->
+      <line x1="210" y1="60" x2="225" y2="40" stroke="#d4af37" stroke-width="2" opacity="0.6"/>
+      <line x1="220" y1="75" x2="240" y2="65" stroke="#d4af37" stroke-width="2" opacity="0.6"/>
+      <line x1="205" y1="50" x2="215" y2="30" stroke="#d4af37" stroke-width="2" opacity="0.6"/>
+    </svg>`,
+    areas: {
+      'cuerpo': '#f0f0f0', 'ala-izq': '#f0f0f0', 'ala-der': '#f0f0f0',
+      'cabeza': '#f0f0f0', 'cola': '#f0f0f0', 'pico': '#d4af37',
+      'ojo': '#4a90d9', 'rama': '#a0522d',
+      'hoja1': '#5cb85c', 'hoja2': '#5cb85c', 'hoja3': '#5cb85c'
+    }
+  },
+  {
+    nombre: '✝️ Cruz',
+    svg: `<svg viewBox="0 0 300 300" class="dibujo-svg" id="svg-colorear">
+      <!-- Cruz principal -->
+      <rect x="125" y="40" width="50" height="220" rx="8" fill="#d4af37" data-num="2" data-area="cruz-vert"/>
+      <rect x="60" y="100" width="180" height="50" rx="8" fill="#d4af37" data-num="2" data-area="cruz-horiz"/>
+      <!-- Decoración flores esquinas -->
+      <circle cx="80" cy="90" r="15" fill="#e8728a" data-num="1" data-area="flor1"/>
+      <circle cx="220" cy="90" r="15" fill="#e8728a" data-num="1" data-area="flor2"/>
+      <circle cx="80" cy="160" r="15" fill="#e8728a" data-num="1" data-area="flor3"/>
+      <circle cx="220" cy="160" r="15" fill="#e8728a" data-num="1" data-area="flor4"/>
+      <!-- Pétalos -->
+      <ellipse cx="60" cy="90" rx="10" ry="6" fill="#f4b8c8" data-num="1" data-area="petalo1"/>
+      <ellipse cx="100" cy="90" rx="10" ry="6" fill="#f4b8c8" data-num="1" data-area="petalo2"/>
+      <ellipse cx="80" cy="70" rx="6" ry="10" fill="#f4b8c8" data-num="1" data-area="petalo3"/>
+      <ellipse cx="80" cy="110" rx="6" ry="10" fill="#f4b8c8" data-num="1" data-area="petalo4"/>
+      <!-- Hojas -->
+      <ellipse cx="110" cy="70" rx="14" ry="7" fill="#5cb85c" data-num="4" data-area="hoja-cruz1" transform="rotate(-45,110,70)"/>
+      <ellipse cx="190" cy="70" rx="14" ry="7" fill="#5cb85c" data-num="4" data-area="hoja-cruz2" transform="rotate(45,190,70)"/>
+      <!-- Brillo superior -->
+      <circle cx="150" cy="60" r="10" fill="#f0d98a" data-num="6" data-area="brillo"/>
+      <!-- Base -->
+      <rect x="130" y="250" width="40" height="15" rx="4" fill="#a0522d" data-num="8" data-area="base"/>
+    </svg>`,
+    areas: {
+      'cruz-vert': '#d4af37', 'cruz-horiz': '#d4af37',
+      'flor1': '#e8728a', 'flor2': '#e8728a', 'flor3': '#e8728a', 'flor4': '#e8728a',
+      'petalo1': '#f4b8c8', 'petalo2': '#f4b8c8', 'petalo3': '#f4b8c8', 'petalo4': '#f4b8c8',
+      'hoja-cruz1': '#5cb85c', 'hoja-cruz2': '#5cb85c',
+      'brillo': '#f0d98a', 'base': '#a0522d'
+    }
+  },
+  {
+    nombre: '🌸 Flores',
+    svg: `<svg viewBox="0 0 300 280" class="dibujo-svg" id="svg-colorear">
+      <!-- Flor grande centro -->
+      <circle cx="150" cy="130" r="25" fill="#d4af37" data-num="2" data-area="centro1"/>
+      <ellipse cx="150" cy="85" rx="18" ry="28" fill="#e8728a" data-num="1" data-area="petalo-arr"/>
+      <ellipse cx="150" cy="175" rx="18" ry="28" fill="#e8728a" data-num="1" data-area="petalo-aba"/>
+      <ellipse cx="105" cy="130" rx="28" ry="18" fill="#e8728a" data-num="1" data-area="petalo-izq"/>
+      <ellipse cx="195" cy="130" rx="28" ry="18" fill="#e8728a" data-num="1" data-area="petalo-der"/>
+      <ellipse cx="118" cy="98" rx="18" ry="10" fill="#f4b8c8" data-num="1" data-area="petalo-d1" transform="rotate(45,118,98)"/>
+      <ellipse cx="182" cy="98" rx="18" ry="10" fill="#f4b8c8" data-num="1" data-area="petalo-d2" transform="rotate(-45,182,98)"/>
+      <ellipse cx="118" cy="162" rx="18" ry="10" fill="#f4b8c8" data-num="1" data-area="petalo-d3" transform="rotate(-45,118,162)"/>
+      <ellipse cx="182" cy="162" rx="18" ry="10" fill="#f4b8c8" data-num="1" data-area="petalo-d4" transform="rotate(45,182,162)"/>
+      <!-- Tallo -->
+      <line x1="150" y1="205" x2="150" y2="260" stroke="#5cb85c" stroke-width="5"/>
+      <!-- Hojas del tallo -->
+      <ellipse cx="130" cy="230" rx="20" ry="10" fill="#5cb85c" data-num="4" data-area="hoja-t1" transform="rotate(-30,130,230)"/>
+      <ellipse cx="170" cy="245" rx="20" ry="10" fill="#5cb85c" data-num="4" data-area="hoja-t2" transform="rotate(30,170,245)"/>
+      <!-- Florcitas pequeñas -->
+      <circle cx="65" cy="70" r="12" fill="#d4af37" data-num="2" data-area="centro2"/>
+      <circle cx="65" cy="45" r="10" fill="#9b59b6" data-num="5" data-area="mini1"/>
+      <circle cx="65" cy="95" r="10" fill="#9b59b6" data-num="5" data-area="mini2"/>
+      <circle cx="40" cy="70" r="10" fill="#9b59b6" data-num="5" data-area="mini3"/>
+      <circle cx="90" cy="70" r="10" fill="#9b59b6" data-num="5" data-area="mini4"/>
+      <!-- Florita derecha -->
+      <circle cx="235" cy="70" r="12" fill="#d4af37" data-num="2" data-area="centro3"/>
+      <circle cx="235" cy="45" r="10" fill="#4a90d9" data-num="3" data-area="mini5"/>
+      <circle cx="235" cy="95" r="10" fill="#4a90d9" data-num="3" data-area="mini6"/>
+      <circle cx="210" cy="70" r="10" fill="#4a90d9" data-num="3" data-area="mini7"/>
+      <circle cx="260" cy="70" r="10" fill="#4a90d9" data-num="3" data-area="mini8"/>
+    </svg>`,
+    areas: {
+      'centro1': '#d4af37', 'centro2': '#d4af37', 'centro3': '#d4af37',
+      'petalo-arr': '#e8728a', 'petalo-aba': '#e8728a', 'petalo-izq': '#e8728a', 'petalo-der': '#e8728a',
+      'petalo-d1': '#f4b8c8', 'petalo-d2': '#f4b8c8', 'petalo-d3': '#f4b8c8', 'petalo-d4': '#f4b8c8',
+      'hoja-t1': '#5cb85c', 'hoja-t2': '#5cb85c',
+      'mini1': '#9b59b6', 'mini2': '#9b59b6', 'mini3': '#9b59b6', 'mini4': '#9b59b6',
+      'mini5': '#4a90d9', 'mini6': '#4a90d9', 'mini7': '#4a90d9', 'mini8': '#4a90d9'
+    }
+  },
+  {
+    nombre: '⭐ Estrella de Belén',
+    svg: `<svg viewBox="0 0 300 300" class="dibujo-svg" id="svg-colorear">
+      <!-- Estrella grande -->
+      <polygon points="150,30 165,110 240,110 180,155 205,235 150,190 95,235 120,155 60,110 135,110" fill="#d4af37" data-num="2" data-area="estrella"/>
+      <!-- Rayos de luz largos -->
+      <line x1="150" y1="20" x2="150" y2="5" stroke="#f0d98a" stroke-width="4" data-num="6" data-area="rayo1"/>
+      <line x1="230" y1="80" x2="250" y2="65" stroke="#f0d98a" stroke-width="4"/>
+      <line x1="70" y1="80" x2="50" y2="65" stroke="#f0d98a" stroke-width="4"/>
+      <!-- Centro brillo -->
+      <circle cx="150" cy="140" r="30" fill="#f0d98a" data-num="6" data-area="centro-est"/>
+      <circle cx="150" cy="140" r="15" fill="white" data-num="7" data-area="brillo-est"/>
+      <!-- Nubes -->
+      <ellipse cx="60" cy="200" rx="35" ry="20" fill="white" data-num="7" data-area="nube1"/>
+      <ellipse cx="45" cy="195" rx="20" ry="15" fill="white" data-num="7" data-area="nube1b"/>
+      <ellipse cx="75" cy="195" rx="20" ry="15" fill="white" data-num="7" data-area="nube1c"/>
+      <ellipse cx="240" cy="200" rx="35" ry="20" fill="white" data-num="7" data-area="nube2"/>
+      <ellipse cx="225" cy="195" rx="20" ry="15" fill="white" data-num="7" data-area="nube2b"/>
+      <ellipse cx="255" cy="195" rx="20" ry="15" fill="white" data-num="7" data-area="nube2c"/>
+      <!-- Cielo de fondo -->
+      <rect x="0" y="230" width="300" height="70" rx="0" fill="#4a90d9" data-num="3" data-area="cielo"/>
+      <!-- Palmera -->
+      <line x1="80" y1="280" x2="80" y2="230" stroke="#a0522d" stroke-width="6"/>
+      <ellipse cx="70" cy="228" rx="20" ry="8" fill="#5cb85c" data-num="4" data-area="palma1" transform="rotate(-30,70,228)"/>
+      <ellipse cx="90" cy="225" rx="20" ry="8" fill="#5cb85c" data-num="4" data-area="palma2" transform="rotate(20,90,225)"/>
+    </svg>`,
+    areas: {
+      'estrella': '#d4af37', 'centro-est': '#f0d98a', 'brillo-est': 'white',
+      'nube1': 'white', 'nube1b': 'white', 'nube1c': 'white',
+      'nube2': 'white', 'nube2b': 'white', 'nube2c': 'white',
+      'cielo': '#4a90d9', 'palma1': '#5cb85c', 'palma2': '#5cb85c'
+    }
+  },
+  {
+    nombre: '🐑 Ovejita',
+    svg: `<svg viewBox="0 0 300 260" class="dibujo-svg" id="svg-colorear">
+      <!-- Cuerpo lana -->
+      <ellipse cx="150" cy="140" rx="80" ry="55" fill="white" data-num="7" data-area="cuerpo-ov"/>
+      <!-- Bolitas de lana -->
+      <circle cx="110" cy="110" r="28" fill="white" data-num="7" data-area="lana1"/>
+      <circle cx="150" cy="100" r="30" fill="white" data-num="7" data-area="lana2"/>
+      <circle cx="190" cy="110" r="28" fill="white" data-num="7" data-area="lana3"/>
+      <circle cx="105" cy="145" r="25" fill="white" data-num="7" data-area="lana4"/>
+      <circle cx="195" cy="145" r="25" fill="white" data-num="7" data-area="lana5"/>
+      <circle cx="130" cy="160" r="22" fill="white" data-num="7" data-area="lana6"/>
+      <circle cx="170" cy="160" r="22" fill="white" data-num="7" data-area="lana7"/>
+      <!-- Cabeza -->
+      <ellipse cx="220" cy="115" rx="32" ry="28" fill="#f4b8c8" data-num="1" data-area="cabeza-ov"/>
+      <!-- Oreja -->
+      <ellipse cx="228" cy="90" rx="10" ry="16" fill="#f4b8c8" data-num="1" data-area="oreja" transform="rotate(20,228,90)"/>
+      <ellipse cx="228" cy="90" rx="6" ry="10" fill="#e8728a" data-num="1" data-area="oreja-int" transform="rotate(20,228,90)"/>
+      <!-- Ojo -->
+      <circle cx="232" cy="112" r="7" fill="#4a90d9" data-num="3" data-area="ojo-ov"/>
+      <circle cx="232" cy="112" r="3" fill="#333"/>
+      <!-- Nariz -->
+      <ellipse cx="248" cy="122" rx="6" ry="4" fill="#e8728a" data-num="1" data-area="nariz-ov"/>
+      <!-- Patas -->
+      <rect x="120" y="185" width="14" height="40" rx="7" fill="#f4b8c8" data-num="1" data-area="pata1"/>
+      <rect x="140" y="185" width="14" height="40" rx="7" fill="#f4b8c8" data-num="1" data-area="pata2"/>
+      <rect x="160" y="185" width="14" height="40" rx="7" fill="#f4b8c8" data-num="1" data-area="pata3"/>
+      <rect x="180" y="185" width="14" height="40" rx="7" fill="#f4b8c8" data-num="1" data-area="pata4"/>
+      <!-- Pezuñas -->
+      <ellipse cx="127" cy="225" rx="8" ry="5" fill="#a0522d" data-num="8" data-area="pez1"/>
+      <ellipse cx="147" cy="225" rx="8" ry="5" fill="#a0522d" data-num="8" data-area="pez2"/>
+      <ellipse cx="167" cy="225" rx="8" ry="5" fill="#a0522d" data-num="8" data-area="pez3"/>
+      <ellipse cx="187" cy="225" rx="8" ry="5" fill="#a0522d" data-num="8" data-area="pez4"/>
+      <!-- Pasto -->
+      <rect x="0" y="235" width="300" height="25" fill="#5cb85c" data-num="4" data-area="pasto"/>
+      <!-- Florecitas en pasto -->
+      <circle cx="50" cy="232" r="6" fill="#e8728a" data-num="1" data-area="flor-p1"/>
+      <circle cx="250" cy="232" r="6" fill="#f0d98a" data-num="6" data-area="flor-p2"/>
+    </svg>`,
+    areas: {
+      'cuerpo-ov': 'white', 'lana1': 'white', 'lana2': 'white', 'lana3': 'white',
+      'lana4': 'white', 'lana5': 'white', 'lana6': 'white', 'lana7': 'white',
+      'cabeza-ov': '#f4b8c8', 'oreja': '#f4b8c8', 'oreja-int': '#e8728a',
+      'ojo-ov': '#4a90d9', 'nariz-ov': '#e8728a',
+      'pata1': '#f4b8c8', 'pata2': '#f4b8c8', 'pata3': '#f4b8c8', 'pata4': '#f4b8c8',
+      'pez1': '#a0522d', 'pez2': '#a0522d', 'pez3': '#a0522d', 'pez4': '#a0522d',
+      'pasto': '#5cb85c', 'flor-p1': '#e8728a', 'flor-p2': '#f0d98a'
+    }
+  },
+  {
+    nombre: '🐟 Peces',
+    svg: `<svg viewBox="0 0 300 260" class="dibujo-svg" id="svg-colorear">
+      <!-- Mar -->
+      <rect x="0" y="150" width="300" height="110" rx="0" fill="#4a90d9" data-num="3" data-area="mar"/>
+      <!-- Olas -->
+      <path d="M0,155 Q37,145 75,155 Q112,165 150,155 Q187,145 225,155 Q262,165 300,155" stroke="white" stroke-width="3" fill="none"/>
+      <!-- Pez grande -->
+      <ellipse cx="150" cy="195" rx="55" ry="28" fill="#e8728a" data-num="1" data-area="pez-grande"/>
+      <polygon points="205,195 230,175 230,215" fill="#e8728a" data-num="1" data-area="cola-grande"/>
+      <circle cx="120" cy="188" r="8" fill="white" data-num="7" data-area="ojo-grande"/>
+      <circle cx="120" cy="188" r="4" fill="#333"/>
+      <!-- Aletas -->
+      <ellipse cx="155" cy="170" rx="20" ry="10" fill="#c45a70" data-num="1" data-area="aleta1" transform="rotate(-20,155,170)"/>
+      <ellipse cx="165" cy="215" rx="15" ry="8" fill="#c45a70" data-num="1" data-area="aleta2" transform="rotate(15,165,215)"/>
+      <!-- Escamas decorativas -->
+      <path d="M160,185 Q170,178 180,185" stroke="#c45a70" stroke-width="2" fill="none"/>
+      <path d="M170,195 Q180,188 190,195" stroke="#c45a70" stroke-width="2" fill="none"/>
+      <!-- Pez pequeño 1 -->
+      <ellipse cx="70" cy="175" rx="30" ry="15" fill="#9b59b6" data-num="5" data-area="pez-chico1"/>
+      <polygon points="100,175 115,162 115,188" fill="#9b59b6" data-num="5" data-area="cola-chico1"/>
+      <circle cx="55" cy="171" r="5" fill="white" data-num="7" data-area="ojo-chico1"/>
+      <circle cx="55" cy="171" r="2" fill="#333"/>
+      <!-- Pez pequeño 2 -->
+      <ellipse cx="240" cy="220" rx="28" ry="14" fill="#f0d98a" data-num="6" data-area="pez-chico2"/>
+      <polygon points="212,220 198,208 198,232" fill="#f0d98a" data-num="6" data-area="cola-chico2"/>
+      <circle cx="252" cy="216" r="5" fill="white" data-num="7" data-area="ojo-chico2"/>
+      <circle cx="252" cy="216" r="2" fill="#333"/>
+      <!-- Burbujas -->
+      <circle cx="100" cy="165" r="6" fill="none" stroke="white" stroke-width="2" opacity="0.7"/>
+      <circle cx="110" cy="155" r="4" fill="none" stroke="white" stroke-width="2" opacity="0.7"/>
+      <!-- Algas -->
+      <path d="M30,260 Q20,240 30,220 Q40,200 30,180" stroke="#5cb85c" stroke-width="4" fill="none" data-num="4" data-area="alga1"/>
+      <path d="M270,260 Q280,240 270,220 Q260,200 270,180" stroke="#5cb85c" stroke-width="4" fill="none" data-num="4" data-area="alga2"/>
+      <!-- Cielo -->
+      <rect x="0" y="0" width="300" height="150" fill="#f0d98a" data-num="6" data-area="cielo-pez"/>
+      <!-- Sol -->
+      <circle cx="260" cy="50" r="30" fill="#d4af37" data-num="2" data-area="sol"/>
+      <line x1="260" y1="10" x2="260" y2="0" stroke="#d4af37" stroke-width="3"/>
+      <line x1="290" y1="30" x2="300" y2="25" stroke="#d4af37" stroke-width="3"/>
+      <line x1="290" y1="70" x2="300" y2="75" stroke="#d4af37" stroke-width="3"/>
+      <line x1="260" y1="90" x2="260" y2="100" stroke="#d4af37" stroke-width="3"/>
+    </svg>`,
+    areas: {
+      'mar': '#4a90d9', 'pez-grande': '#e8728a', 'cola-grande': '#e8728a',
+      'ojo-grande': 'white', 'aleta1': '#c45a70', 'aleta2': '#c45a70',
+      'pez-chico1': '#9b59b6', 'cola-chico1': '#9b59b6', 'ojo-chico1': 'white',
+      'pez-chico2': '#f0d98a', 'cola-chico2': '#f0d98a', 'ojo-chico2': 'white',
+      'cielo-pez': '#f0d98a', 'sol': '#d4af37'
+    }
+  }
+];
+
+var estadoColores = {};
+
+function iniciarColorear() {
+  // Selector de dibujos
+  var sel = document.getElementById('dibujo-selector');
+  sel.innerHTML = dibujos.map(function(d, i) {
+    return '<div class="dibujo-opt' + (i===0?' active':'') + '" onclick="cambiarDibujo(' + i + ')">' + d.nombre + '</div>';
+  }).join('');
+
+  // Paleta de colores
+  var paleta = document.getElementById('paleta-colores');
+  var paletaHTML = '';
+  coloresDisponibles.forEach(function(c, i) {
+    var borde = c.color === '#ffffff' ? '#ccc' : 'transparent';
+    var activo = i === 0 ? ' active' : '';
+    paletaHTML += '<div class="color-btn' + activo + '" style="background:' + c.color + ';border-color:' + borde + '" data-color="' + c.color + '">' + c.num + '</div>';
+  });
+  paleta.innerHTML = paletaHTML;
+  paleta.querySelectorAll('.color-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() { seleccionarColor(this.getAttribute('data-color'), this); });
+  });
+
+  // Leyenda
+  var leyenda = document.getElementById('leyenda-colores');
+  leyenda.innerHTML = coloresDisponibles.map(function(c) {
+    return '<div style="display:flex;align-items:center;gap:4px;font-size:11px;color:var(--texto-suave)">' +
+      '<div style="width:14px;height:14px;background:' + c.color + ';border-radius:3px;border:1px solid #ccc"></div>' +
+      c.num + '=' + c.nombre + '</div>';
+  }).join('');
+
+  cargarDibujo(0);
+}
+
+function cambiarDibujo(idx) {
+  dibujoActual = idx;
+  estadoColores = {};
+  document.querySelectorAll('.dibujo-opt').forEach(function(el, i) {
+    el.classList.toggle('active', i === idx);
+  });
+  cargarDibujo(idx);
+}
+
+function cargarDibujo(idx) {
+  var d = dibujos[idx];
+  var container = document.getElementById('dibujo-container');
+  container.innerHTML = d.svg;
+  estadoColores = Object.assign({}, d.areas);
+  
+  // Aplicar colores y eventos
+  setTimeout(function() {
+    var svg = document.getElementById('svg-colorear');
+    if (!svg) return;
+    var elementos = svg.querySelectorAll('[data-area]');
+    elementos.forEach(function(el) {
+      var area = el.getAttribute('data-area');
+      if (estadoColores[area]) el.style.fill = estadoColores[area];
+      el.addEventListener('click', function() {
+        var a = this.getAttribute('data-area');
+        if (a) {
+          estadoColores[a] = colorSeleccionado;
+          this.style.fill = colorSeleccionado;
+        }
+      });
+    });
+  }, 50);
+}
+
+function seleccionarColor(color, btn) {
+  colorSeleccionado = color;
+  document.querySelectorAll('.color-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+function reiniciarColorear() {
+  cargarDibujo(dibujoActual);
+}
+
+// ===== ROMPECABEZAS =====
+var puzzlePiezas = [];
+var puzzleOrden = [];
+var puzzleSeleccionada = null;
+var puzzleMovimientos = 0;
+var puzzleTam = 3;
+
+var puzzleEmojis = [
+  ['🌸','🕊️','✝️','⭐','🌺','🙏','📖','💒','🌟','🕯️','🌷','🍀',
+   '🌼','🦋','🌈','🌻','💐','🌿','🍃','🌾','🎵','💜','🤍','💛','🏔️']
+];
+
+function iniciarRompecabezas(n) {
+  puzzleTam = Math.sqrt(n);
+  puzzleMovimientos = 0;
+  document.getElementById('puzzle-movs').textContent = 'Movimientos: 0';
+  document.getElementById('puzzle-info').textContent = puzzleTam + '×' + puzzleTam + ' — ' + n + ' piezas';
+  document.getElementById('puzzle-resultado').style.display = 'none';
+  document.getElementById('puzzle-reiniciar').style.display = 'block';
+  document.getElementById('puzzle-referencia').style.display = 'block';
+  document.getElementById('puzzle-board').style.display = 'grid';
+  
+  // Crear piezas
+  var emojisBase = puzzleEmojis[0].slice(0, n);
+  while (emojisBase.length < n) emojisBase.push('✨');
+  
+  // Imagen referencia
+  var ref = document.getElementById('puzzle-ref-img');
+  ref.style.display = 'grid';
+  ref.style.gridTemplateColumns = 'repeat(' + puzzleTam + ', 28px)';
+  ref.style.gap = '2px';
+  ref.style.padding = '6px';
+  ref.innerHTML = emojisBase.map(function(e) {
+    return '<div style="font-size:20px;text-align:center">' + e + '</div>';
+  }).join('');
+  
+  puzzlePiezas = emojisBase.slice();
+  puzzleOrden = emojisBase.slice();
+  barajarPuzzle();
+}
+
+function barajarPuzzle() {
+  puzzleMovimientos = 0;
+  document.getElementById('puzzle-movs').textContent = 'Movimientos: 0';
+  document.getElementById('puzzle-resultado').style.display = 'none';
+  puzzleSeleccionada = null;
+  
+  // Barajar
+  var shuffled = puzzleOrden.slice();
+  for (var i = shuffled.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = shuffled[i]; shuffled[i] = shuffled[j]; shuffled[j] = tmp;
+  }
+  puzzlePiezas = shuffled;
+  renderPuzzle();
+}
+
+function renderPuzzle() {
+  var board = document.getElementById('puzzle-board');
+  var size = puzzleTam === 3 ? 85 : puzzleTam === 4 ? 70 : 56;
+  board.style.gridTemplateColumns = 'repeat(' + puzzleTam + ', ' + size + 'px)';
+  board.innerHTML = puzzlePiezas.map(function(emoji, i) {
+    var correcto = emoji === puzzleOrden[i];
+    return '<div class="puzzle-piece' + (correcto?' correct':'') + '" style="width:' + size + 'px;height:' + size + 'px;font-size:' + (size*0.45) + 'px" onclick="clickPieza(' + i + ')">' + emoji + '</div>';
+  }).join('');
+}
+
+function clickPieza(idx) {
+  if (puzzleSeleccionada === null) {
+    puzzleSeleccionada = idx;
+    var piezas = document.querySelectorAll('.puzzle-piece');
+    piezas[idx].classList.add('selected');
+  } else {
+    if (puzzleSeleccionada !== idx) {
+      // Intercambiar
+      var tmp = puzzlePiezas[puzzleSeleccionada];
+      puzzlePiezas[puzzleSeleccionada] = puzzlePiezas[idx];
+      puzzlePiezas[idx] = tmp;
+      puzzleMovimientos++;
+      document.getElementById('puzzle-movs').textContent = 'Movimientos: ' + puzzleMovimientos;
+      renderPuzzle();
+      
+      // Verificar si ganó
+      var correcto = puzzlePiezas.every(function(p, i) { return p === puzzleOrden[i]; });
+      if (correcto) {
+        var res = document.getElementById('puzzle-resultado');
+        res.innerHTML = '🎉 ¡Excelente! ¡Lo armaste en ' + puzzleMovimientos + ' movimientos! 🙌';
+        res.className = 'resultado-msg correcto';
+        res.style.display = 'block';
+      }
+    }
+    puzzleSeleccionada = null;
+  }
+}
+
+// ===== INIT =====
 // INIT
 mostrarVersiculo();
 </script>
